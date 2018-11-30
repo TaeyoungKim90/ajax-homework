@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>homework#6</title>
+</head>
+
+<body>
+    <div id="given">
+    <button class="animal" animal="cat"> Cats </button>
+    <button class="animal" animal="dog"> Dogs </button>
+    <button class="animal" animal="horse"> Horses </button>
+    <button class="animal" animal="anteater"> Anteaters </button>
+    <button class="animal" animal="tiger"> Tigers </button>
+    <button class="animal" animal="lion"> Lions </button>
+    <button class="animal" animal="hamster"> Hamsters </button>
+    <button class="animal" animal="eagle"> Eagles </button>
+    <button class="animal" animal="falcon"> Falcons </button>
+    <button class="animal" animal="cow"> Cows </button>
+    </div>
+
+    <form>
+    <label for="animal-input">Add more animals!</label>
+    <input type="text" id="animal-input"> 
+    <button id="add-animals">submit!</button>
+    </form>
+
+    <div id="display-gifs"></div>
+
+    <!-- <button> input (what users type)</button> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).on("click", ".animal", function() {
+            var search = $(this).attr("animal");
+            var apiURL = "https://api.giphy.com/v1/gifs/search?q=" + search + "&api_key=dc6zaTOxFJmzC&limit=5";
+
+            $.ajax({
+                url: apiURL,
+                method: "GET"
+            }).then(function(response){ 
+
+             
+                var results = response.data;
+
+                for (var i = 0; i < results.length; i++) {
+
+                    var animalDiv = $("<div>");
+
+                    var animalImage =$("<img>");
+                    console.log(results[i].images);
+
+                    animalImage.attr("src", results[i].images.fixed_height.url);
+                    
+
+                    animalDiv.append(animalImage);
+
+                    $("#display-gifs").prepend(animalDiv);
+                     
+                }
+            });
+
+        });
+
+        $("#add-animals").on("click", function(event) {
+            event.preventDefault();
+            var a = $("<button>");
+         
+          a.addClass("animal");
+
+          var name = $("#animal-input").val();
+          
+          a.attr("animal", name);
+          
+          a.text(name);
+          
+          $("#given").append(a);
+
+
+
+
+        })
+
+
+
+        // still working on how to pause the gifs above.....
+        // below is my code.
+
+        // $(document).on(function(response) {
+        //     $(response.fixed_height_still.url)
+        // }.then(this).on("click", function() {
+        //     response.fixed_height.url
+        // }
+            
+
+
+
+
+
+
+
+
+        
+      
+        
+
+    </script>
+      
+</body>
+</html>
